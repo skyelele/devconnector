@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+// Passport is the main authentication module
+const passport = require("passport");
 
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
@@ -22,7 +24,12 @@ mongoose
   .then(() => console.log("MONGODB CONNECTED"))
   .catch(err => console.log(err));
 
-app.get("/", (req, res) => res.send("Hey beautiful"));
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport Config
+//// JWT strategy
+require("./config/passport")(passport);
 
 // User Routes
 app.use("/api/users", users);
